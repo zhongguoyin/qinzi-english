@@ -1087,8 +1087,13 @@ function showAllChBtns(){
 }
 
 function restoreChView(){
-  if(curChKey !== null) showCh(curChKey);
-  else document.getElementById('content').innerHTML = document.getElementById('welcomePage') ? document.getElementById('welcomePage').outerHTML : '';
+  if(curChKey !== null){
+    showCh(curChKey);
+  } else {
+    // 没有选过章节，回到欢迎页（直接重置内容区为欢迎页 HTML，不依赖 DOM 查找）
+    const c = document.getElementById('content');
+    if(c) c.scrollTop = 0;
+  }
 }
 
 function clearSearch(){
