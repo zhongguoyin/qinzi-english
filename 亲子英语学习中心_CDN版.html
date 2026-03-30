@@ -523,8 +523,12 @@ body.hide-zh .src-sent-zh { opacity: 0; pointer-events: none; }
   z-index: 300;
   padding-bottom: env(safe-area-inset-bottom, 0);
 }
+/* 章节抽屉和遮罩只在手机端显示 */
+.chapter-drawer, .drawer-overlay { display: none; }
 @media (max-width: 700px) {
   .bottom-nav { display: flex; }
+  .chapter-drawer { display: flex; }
+  .drawer-overlay { display: block; }
 }
 .bnav-item {
   flex: 1; display: flex; flex-direction: column;
@@ -646,7 +650,7 @@ body.hide-zh .src-sent-zh { opacity: 0; pointer-events: none; }
         <div class="stat-card"><div class="stat-n">377</div><div class="stat-l">🎵 段音频</div></div>
         <div class="stat-card"><div class="stat-n">8000+</div><div class="stat-l">💬 句例句</div></div>
       </div>
-      <button class="start-btn" onclick="showCh(1)">🚀 开始学习！</button>
+      <button class="start-btn" onclick="startLearning()">🚀 开始学习！</button>
     </div>
   </div>
 </div>
@@ -776,14 +780,26 @@ window.onload = () => {
   ga.addEventListener('ended', stopAudio);
   ga.addEventListener('timeupdate', updateProg);
   ga.addEventListener('error', ()=>stopAudio());
-  // 手机端默认隐藏侧边栏折叠按钮（已用底部导航代替）
   updateSidebarToggle();
-  // 默认加载第1章，确保 curChKey 不为空
-  const firstKey = Object.keys(D).sort((a,b)=>+a-+b)[0];
-  if(firstKey !== undefined) showCh(firstKey);
+  // 不自动加载章节，欢迎页正常显示
+  // 手机端：点底部"章节"按钮 or 欢迎页"开始学习"按钮进入
+  // 桌面端：点左侧侧边栏章节按钮进入
 };
 
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// 欢迎页"开始学习"：手机端打开章节抽屉，桌面端直接加载第1章
+function startLearning(){
+  if(window.innerWidth <= 700){
+    openDrawer();
+    bottomNav_setActive('chapter');
+  } else {
+    const firstKey = Object.keys(D).sort((a,b)=>+a-+b)[0];
+    if(firstKey !== undefined) showCh(firstKey);
+  }
+}
+
+
 function highlight(text, q){
   if(!q) return esc(text);
   const re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')', 'gi');
@@ -839,16 +855,21 @@ function bottomNav(tab){
     if(si){ si.focus(); si.scrollIntoView({behavior:'smooth'}); }
     bottomNav_setActive('search');
   } else if(tab === 'quiz'){
-    const qKey = curChKey || Object.keys(D).sort((a,b)=>+a-+b)[0];
-    if(qKey){ startQuiz(qKey); }
-    else { alert('请先选择一个章节，再开始练习 📚'); }
-    bottomNav_setActive('quiz');
+    if(curChKey){
+      startQuiz(curChKey);
+    } else {
+      // 没选章节时，先打开章节抽屉让用户选
+      openDrawer();
+      bottomNav_setActive('chapter');
+    }
   } else if(tab === 'settings'){
     openSettings();
   } else if(tab === 'home'){
-    // 回首页：清空搜索并恢复章节内容
+    // 回首页：清空搜索并恢复视图
     clearSearch();
-    restoreChView();
+    if(curChKey){
+      restoreChView();
+    }
     const c = document.getElementById('content');
     if(c) c.scrollTop = 0;
     bottomNav_setActive('home');
