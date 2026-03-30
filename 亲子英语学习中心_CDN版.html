@@ -778,6 +778,9 @@ window.onload = () => {
   ga.addEventListener('error', ()=>stopAudio());
   // 手机端默认隐藏侧边栏折叠按钮（已用底部导航代替）
   updateSidebarToggle();
+  // 默认加载第1章，确保 curChKey 不为空
+  const firstKey = Object.keys(D).sort((a,b)=>+a-+b)[0];
+  if(firstKey !== undefined) showCh(firstKey);
 };
 
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
@@ -836,16 +839,19 @@ function bottomNav(tab){
     if(si){ si.focus(); si.scrollIntoView({behavior:'smooth'}); }
     bottomNav_setActive('search');
   } else if(tab === 'quiz'){
-    if(curChKey){ startQuiz(curChKey); }
+    const qKey = curChKey || Object.keys(D).sort((a,b)=>+a-+b)[0];
+    if(qKey){ startQuiz(qKey); }
     else { alert('请先选择一个章节，再开始练习 📚'); }
     bottomNav_setActive('quiz');
   } else if(tab === 'settings'){
     openSettings();
   } else if(tab === 'home'){
-    // 回首页
+    // 回首页：清空搜索并恢复章节内容
     clearSearch();
+    restoreChView();
     const c = document.getElementById('content');
-    c.scrollTop = 0;
+    if(c) c.scrollTop = 0;
+    bottomNav_setActive('home');
   }
 }
 function bottomNav_setActive(tab){
@@ -1091,6 +1097,11 @@ function clearSearch(){
   if(si) si.value = '';
   if(mi) mi.value = '';
   showAllChBtns();
+  // 如果当前在搜索结果视图，还原章节内容
+  const content = document.getElementById('content');
+  if(content && (content.querySelector('.search-results-header') || content.querySelector('.no-results'))){
+    restoreChView();
+  }
 }
 
 function doSearch(q){
