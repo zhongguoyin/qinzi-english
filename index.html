@@ -1582,69 +1582,7 @@ body.hide-zh .src-sent-zh { opacity: 0; pointer-events: none; }
 
 
 
-/* 用户系统样式 */
 
-.user-display {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  cursor: pointer;
-
-  padding: 4px 10px;
-
-  border-radius: 12px;
-
-  background: rgba(255,255,255,0.15);
-
-  transition: 0.2s;
-
-}
-
-.user-display:hover {
-
-  background: rgba(255,255,255,0.25);
-
-}
-
-.status-btn {
-
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  width: 32px;
-
-  height: 32px;
-
-  border-radius: 50%;
-
-  border: 2px solid #e2e8f0;
-
-  background: white;
-
-  cursor: pointer;
-
-  font-size: 18px;
-
-  transition: all 0.2s;
-
-  margin-left: 8px;
-
-}
-
-.status-btn:hover {
-
-  transform: scale(1.15);
-
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-
-}
 
 .status-btn.status-learning {
 
@@ -2292,244 +2230,7 @@ body.hide-zh .src-sent-zh { opacity: 0; pointer-events: none; }
 
 
 
-<div class="header">
 
-  <div class="header-logo">🦁</div>
-
-  <div>
-
-    <div class="header-title">亲子英语大冒险</div>
-
-    <div class="header-sub">美国家庭万用亲子英文 · 8000句</div>
-
-  </div>
-
-  <div class="header-right"><div id="userDisplay" class="user-display" onclick="showLoginModal()"><span style="color:white;font-size:14px;">未登录</span></div>
-
-    <button class="toggle-btn" id="toggleEnBtn" onclick="toggleLang('en')" title="隐藏/显示英文">
-
-      <span class="toggle-icon">🇺🇸</span> 英文
-
-    </button>
-
-    <button class="toggle-btn" id="toggleZhBtn" onclick="toggleLang('zh')" title="隐藏/显示中文">
-
-      <span class="toggle-icon">🇨🇳</span> 中文
-
-    </button>
-
-    <div class="star-badge">⭐ <span id="starCount">0</span> 星</div>
-
-  </div>
-
-</div>
-
-
-
-<!-- 手机端：搜索框内嵌在内容区顶部 -->
-
-<div class="mobile-search-wrap" id="mobileSearchWrap">
-
-  <input type="text" id="mobileSearchInput" placeholder="🔍 搜索章节、英文、中文..." oninput="onSearch(this.value);syncSearch(this.value,'mobile')">
-
-</div>
-
-
-
-<div class="main-layout" style="position:relative;">
-
-  <!-- 桌面侧边栏折叠按钮 -->
-
-  <button class="sidebar-toggle-edge" id="sidebarToggleEdge" onclick="toggleSidebar()" title="折叠/展开章节列表">◀</button>
-
-
-
-  <div class="sidebar" id="sidebar">
-
-    <div class="search-wrap">
-
-      <input class="search-input" type="text" id="searchInput" placeholder="搜索章节、英文、中文..." oninput="onSearch(this.value);syncSearch(this.value,'desktop')">
-
-    </div>
-
-    <div class="sidebar-label">📚 学习章节</div>
-
-    <button class="wc-sidebar-btn" id="wcSidebarBtn" onclick="showWallcardPage()">🃏 墙卡相册</button>
-
-    <div id="chList"></div>
-
-  </div>
-
-  <div class="content" id="content">
-
-    <!-- 独立墙卡页 -->
-
-    <div id="wallcardPage"></div>
-
-    <!-- 欢迎页 -->
-
-    <div class="welcome" id="welcomePage">
-
-      <div class="welcome-mascot">🦁</div>
-
-      <div class="welcome-h1">亲子英语<br>大冒险！</div>
-
-      <div class="welcome-desc">🌟 和爸爸妈妈一起学英语吧！<br>每天学几句，英语超棒棒！<br>点击底部 📚 章节开始学习 👇</div>
-
-      <div class="welcome-stats">
-
-        <div class="stat-card"><div class="stat-n">46</div><div class="stat-l">📖 个主题</div></div>
-
-        <div class="stat-card"><div class="stat-n">377</div><div class="stat-l">🎵 段音频</div></div>
-
-        <div class="stat-card"><div class="stat-n">8000+</div><div class="stat-l">💬 句例句</div></div>
-
-      </div>
-
-      <button class="start-btn" onclick="startLearning()">🚀 开始学习！</button>
-
-    </div>
-
-    <!-- 章节内容 -->
-
-    <div id="chContent"></div>
-
-  </div>
-
-</div>
-
-
-
-<!-- 底部章节抽屉遮罩 -->
-
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-
-
-
-<!-- 底部章节抽屉（手机） -->
-
-<div class="chapter-drawer" id="chapterDrawer">
-
-  <div class="drawer-handle"></div>
-
-  <div class="drawer-header">
-
-    <span class="drawer-title">📚 选择章节</span>
-
-    <button class="drawer-close" onclick="closeDrawer()">✕</button>
-
-  </div>
-
-  <div class="drawer-search">
-
-    <input type="text" id="drawerSearchInput" placeholder="🔍 搜索章节..." oninput="filterDrawer(this.value)">
-
-  </div>
-
-  <div class="drawer-list" id="drawerList"></div>
-
-</div>
-
-
-
-<!-- 底部导航栏（手机） -->
-
-<div class="bottom-nav">
-
-  <button class="bnav-item active" id="bnav-home" onclick="bottomNav('home')">
-
-    <span class="bnav-icon">🏠</span>首页
-
-  </button>
-
-  <button class="bnav-item" id="bnav-chapter" onclick="bottomNav('chapter')">
-
-    <span class="bnav-icon">📚</span>章节
-
-  </button>
-
-  <button class="bnav-item" id="bnav-wallcard" onclick="bottomNav('wallcard')">
-
-    <span class="bnav-icon">🃏</span>墙卡
-
-  </button>
-
-  <button class="bnav-item" id="bnav-quiz" onclick="bottomNav('quiz')">
-
-    <span class="bnav-icon">🎯</span>练习
-
-  </button>
-
-  <button class="bnav-item" id="bnav-settings" onclick="bottomNav('settings')">
-
-    <span class="bnav-icon">⚙️</span>设置
-
-  </button>
-
-</div>
-
-
-
-<!-- 练习遮罩层 -->
-
-<div class="quiz-overlay" id="quizOverlay">
-
-  <div class="quiz-box" id="quizBox">
-
-    <!-- 动态填充 -->
-
-  </div>
-
-</div>
-
-
-
-<!-- 设置面板（手机弹出） -->
-
-<div class="quiz-overlay" id="settingsOverlay" style="z-index:900;">
-  <div class="quiz-box" style="max-width:380px;max-height:85vh;overflow-y:auto;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-      <span style="font-size:17px;font-weight:900;color:#2d3748">⚙️ 设置</span>
-      <button class="quiz-close" onclick="closeSettings()">✕</button>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:14px;">
-
-      <!-- 个人账号区 -->
-      <div style="background:#f0f4ff;border-radius:14px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:#4a5568;margin-bottom:10px">👤 个人账号</div>
-        <div id="settingsUserArea">
-          <!-- 由 JS 动态渲染：未登录显示输入框，已登录显示用户信息 -->
-        </div>
-      </div>
-
-      <!-- 显示控制 -->
-      <div style="background:#f8f9ff;border-radius:14px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:#4a5568;margin-bottom:10px">👁️ 显示控制</div>
-        <div style="display:flex;gap:10px;">
-          <button id="settingsEnBtn" onclick="toggleLang('en')" style="flex:1;padding:10px;border-radius:12px;border:2px solid #e8ecf8;background:white;font-size:13px;font-weight:700;cursor:pointer;">🇺🇸 英文</button>
-          <button id="settingsZhBtn" onclick="toggleLang('zh')" style="flex:1;padding:10px;border-radius:12px;border:2px solid #e8ecf8;background:white;font-size:13px;font-weight:700;cursor:pointer;">🇨🇳 中文</button>
-        </div>
-      </div>
-
-      <!-- 学习进度 -->
-      <div style="background:#f8f9ff;border-radius:14px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:#4a5568;margin-bottom:4px">⭐ 学习积分</div>
-        <div style="font-size:22px;font-weight:900;color:#667eea;">⭐ <span id="settingsStarCount">0</span> 星</div>
-      </div>
-
-      <!-- 离线缓存区 -->
-      <div style="background:#f0fff4;border-radius:14px;padding:14px 16px;">
-        <div style="font-size:13px;font-weight:700;color:#4a5568;margin-bottom:10px">📥 离线缓存</div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <div style="flex:1;text-align:center;background:white;border-radius:10px;padding:8px;">
-            <div id="settingsCachedCount" style="font-size:20px;font-weight:900;color:#48bb78">0</div>
-            <div style="font-size:11px;color:#888;">已缓存章节</div>
-          </div>
-          <div style="flex:1;text-align:center;background:white;border-radius:10px;padding:8px;">
-            <div id="settingsCacheSize" style="font-size:20px;font-weight:900;color:#48bb78">0MB</div>
-            <div style="font-size:11px;color:#888;">缓存大小</div>
-          </div>
-        </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button onclick="cacheCurrentChapter()" style="flex:1;min-width:100px;padding:9px 8px;border-radius:10px;border:none;background:linear-gradient(135deg,#48bb78,#38a169);color:white;font-size:12px;font-weight:700;cursor:pointer;">💾 缓存当前章</button>
           <button onclick="cacheAllChapters()" style="flex:1;min-width:100px;padding:9px 8px;border-radius:10px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-size:12px;font-weight:700;cursor:pointer;">⬇️ 缓存全部</button>
@@ -2647,706 +2348,91 @@ function buildSearchIndex(){
 
 
 
-// ===== 用户系统 =====
+// ===== 进度系统（纯本地 localStorage）=====
 
-const API_BASE = 'https://45.207.196.249:5443';
-
-let currentUser = null;
-
+const PROGRESS_KEY = 'qinzi_progress_v1';
 let progressCache = {};
 
-
-
-function initUserSystem() {
-
-  const saved = localStorage.getItem('qinzi_user');
-
-  if (saved) {
-
-    currentUser = JSON.parse(saved);
-    updateHeaderUser();
-    loadUserProgress();
-
-    // 显示统计按钮
-
-    setTimeout(() => {
-
-      const toggleBtn = document.getElementById('statsToggleBtn');
-
-      if (toggleBtn) {
-
-        toggleBtn.style.display = 'block';
-
-      }
-
-    }, 100);
-
-  } else {
-
-    // 不强制登录，只显示登录按钮
-    updateHeaderUser();
-    // 隐藏统计按钮
-    const toggleBtn = document.getElementById('statsToggleBtn');
-    if (toggleBtn) {
-      toggleBtn.style.display = 'none';
-    }
-
-  }
-
-}
-
-
-
-function showLoginModal() {
-
-  if (document.getElementById('loginModal')) return;
-
-  const html = '<div id="loginModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;">' +
-
-    '<div style="background:white;border-radius:20px;padding:30px 40px;max-width:360px;width:90%;box-shadow:0 10px 40px rgba(0,0,0,0.3);position:relative;">' +
-
-    '<button onclick="closeLoginModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;border:none;background:#f0f0f0;border-radius:15px;cursor:pointer;font-size:16px;color:#666;">×</button>' +
-
-    '<h2 style="margin:0 0 20px;text-align:center;color:#667eea;">欢迎使用</h2>' +
-
-    '<p style="color:#666;font-size:14px;margin-bottom:20px;text-align:center;">用户名会自动注册，默认密码是1234</p>' +
-
-    '<input id="loginInput" type="text" placeholder="请输入用户名（必填）" maxlength="20" ' +
-
-    'style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;margin-bottom:12px;">' +
-
-    '<input id="loginPassword" type="password" placeholder="密码（选填，默认1234）" maxlength="10" ' +
-
-    'style="width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:16px;outline:none;margin-bottom:20px;">' +
-
-    '<button onclick="doLogin()" style="width:100%;padding:12px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;">开始学习</button>' +
-
-    '</div></div>';
-
-  document.body.insertAdjacentHTML('beforeend', html);
-
-  const input = document.getElementById('loginInput');
-
-  if (input) {
-
-    input.focus();
-
-    input.addEventListener('keypress', function(e) { if (e.key === 'Enter') doLogin(); });
-
-  }
-
-}
-
-
-
-function closeLoginModal() {
-
-  const modal = document.getElementById('loginModal');
-
-  if (modal) modal.remove();
-
-}
-
-
-
-async function doLogin() {
-
-  const input = document.getElementById('loginInput');
-
-  const passInput = document.getElementById('loginPassword');
-
-  const username = input ? input.value.trim() : '';
-
-  const password = passInput ? passInput.value.trim() : '1234';
-
-  
-
-  if (!username) { alert('请输入用户名'); return; }
-
+// 加载进度
+function loadProgress() {
   try {
-
-    const res = await fetch(API_BASE + '/api/user/login', {
-
-      method: 'POST',
-
-      headers: {'Content-Type': 'application/json'},
-
-      body: JSON.stringify({username: username, password: password})
-
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-
-      currentUser = data.user;
-
-      localStorage.setItem('qinzi_user', JSON.stringify(currentUser));
-
-      const modal = document.getElementById('loginModal');
-
-      if (modal) modal.remove();
-
-      updateHeaderUser();
-      showToast('登录成功！');
-
-      loadUserProgress();
-
-      // 显示统计按钮
-
-      const toggleBtn = document.getElementById('statsToggleBtn');
-
-      if (toggleBtn) {
-
-        toggleBtn.style.display = 'block';
-
-      }
-
-    } else {
-
-      alert('登录失败：' + (data.error || '未知错误'));
-
+    const saved = localStorage.getItem(PROGRESS_KEY);
+    if (saved) {
+      progressCache = JSON.parse(saved);
     }
-
-  } catch (err) {
-
-    alert('网络错误，请检查连接');
-
-    console.error(err);
-
+  } catch(e) {
+    progressCache = {};
   }
-
+  updateProgressUI();
 }
 
-
-
-async function loadUserProgress() {
-
-  if (!currentUser) return;
-
+// 保存进度
+function saveProgress() {
   try {
-
-    const res = await fetch(API_BASE + '/api/progress/get/' + currentUser.id);
-
-    const data = await res.json();
-
-    if (data.success) {
-
-      progressCache = data.progress;
-
-      updateProgressUI();
-
-    }
-
-  } catch (err) {
-
-    console.error('加载进度失败:', err);
-
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressCache));
+  } catch(e) {
+    console.warn('保存进度失败:', e);
   }
-
 }
 
-
-
+// 获取状态图标
 function getStatusIcon(status) {
-
   return {'unlearned':'⚪','learning':'🟡','mastered':'🟢'}[status] || '⚪';
-
 }
 
-
-
+// 获取状态文字
 function getStatusText(status) {
-
-  return {'unlearned':'标记为未学','learning':'正在学习','mastered':'已掌握！'}[status] || '';
-
+  return {'unlearned':'未学习','learning':'学习中','mastered':'已掌握'}[status] || '';
 }
 
-
-
-async function updateSentenceStatus(sid, status) {
-
-  if (!currentUser) { 
-
-    if (confirm('需要登录才能记录学习进度，是否现在登录？')) {
-
-      showLoginModal();
-
-    }
-
-    return; 
-
-  }
-
-  try {
-
-    const res = await fetch(API_BASE + '/api/progress/update', {
-
-      method: 'POST',
-
-      headers: {'Content-Type': 'application/json'},
-
-      body: JSON.stringify({user_id: currentUser.id, sentence_id: sid, status: status})
-
-    });
-
-    const data = await res.json();
-
-    if (data.success) {
-
-      progressCache[sid] = status;
-
-      const btn = document.getElementById('status-' + sid);
-
-      if (btn) {
-
-        btn.textContent = getStatusIcon(status);
-
-        btn.className = 'status-btn status-' + status;
-
-      }
-
-      showToast(getStatusText(status));
-
-    }
-
-  } catch (err) {
-
-    console.error('更新失败:', err);
-
-  }
-
-}
-
-
-
+// 循环切换状态：⚪ → 🟡 → 🟢 → ⚪
 function cycleStatus(sid) {
-
   const current = progressCache[sid] || 'unlearned';
-
   const next = {'unlearned':'learning','learning':'mastered','mastered':'unlearned'}[current];
-
   updateSentenceStatus(sid, next);
-
 }
 
-
-
-function updateProgressUI() {
-
-  Object.keys(progressCache).forEach(function(sid) {
-
-    const btn = document.getElementById('status-' + sid);
-
-    if (btn) {
-
-      const status = progressCache[sid];
-
-      btn.textContent = getStatusIcon(status);
-
-      btn.className = 'status-btn status-' + status;
-
-    }
-
-  });
-
-}
-
-
-
-function userLogout() {
-
-  if (!currentUser || !confirm('确定要退出登录吗？')) return;
-
-  
-
-  // 清除本地存储
-
-  localStorage.removeItem('qinzi_user');
-
-  currentUser = null;
-
-  
-
-  // 更新用户显示区域
-
-  const el = document.getElementById('userDisplay');
-
-  if (el) {
-
-    el.innerHTML = '<span style="color:#888;cursor:pointer;text-decoration:underline;" title="点击登录记录学习进度">点击登录</span>';
-
-    el.onclick = function(){ openSettings(); refreshSettingsUserArea(); };
-
+// 更新某句状态
+function updateSentenceStatus(sid, status) {
+  progressCache[sid] = status;
+  saveProgress();
+  const btn = document.getElementById('status-' + sid);
+  if (btn) {
+    btn.textContent = getStatusIcon(status);
+    btn.className = 'status-btn status-' + status;
+    btn.title = getStatusText(status);
   }
+  updateStatsDisplay();
+}
 
-  
+// 更新全部进度 UI（用于初始化时）
+function updateProgressUI() {
+  Object.keys(progressCache).forEach(function(sid) {
+    const btn = document.getElementById('status-' + sid);
+    if (btn) {
+      const status = progressCache[sid];
+      btn.textContent = getStatusIcon(status);
+      btn.className = 'status-btn status-' + status;
+      btn.title = getStatusText(status);
+    }
+  });
+  updateStatsDisplay();
+}
 
-  // 清除进度缓存
-
+// 清空所有进度（在设置页提供入口）
+function clearAllProgress() {
+  if (!confirm('确定清空所有学习进度吗？此操作不可恢复。')) return;
   progressCache = {};
-
-  
-
-  // 隐藏统计面板
-
-  hideStatsPanel();
-
-  
-
-  showToast('已退出登录');
-
-}
-
-
-
-// ===== 学习统计功能 =====
-
-function toggleStatsPanel() {
-
-  const panel = document.getElementById('statsPanel');
-
-  if (!panel) return;
-
-  
-
-  if (panel.style.display === 'block') {
-
-    hideStatsPanel();
-
-  } else {
-
-    showStatsPanel();
-
-  }
-
-}
-
-
-
-function showStatsPanel() {
-
-  let panel = document.getElementById('statsPanel');
-
-  if (!panel) {
-
-    // 创建统计面板HTML
-
-    const panelHTML = `
-
-      <div id="statsPanel" class="stats-panel">
-
-        <div class="stats-header">
-
-          <div class="stats-title">📊 学习统计</div>
-
-          <button class="close-stats" onclick="hideStatsPanel()">×</button>
-
-        </div>
-
-        <div class="overall-progress">
-
-          <div class="progress-label">
-
-            <span>整体进度</span>
-
-            <span id="overallPercent">0%</span>
-
-          </div>
-
-          <div class="progress-bar">
-
-            <div id="progressFill" class="progress-fill" style="width: 0%"></div>
-
-          </div>
-
-        </div>
-
-        <div class="stats-grid">
-
-          <div class="stat-item">
-
-            <div id="unlearnedCount" class="stat-count">0</div>
-
-            <div class="stat-label">未学</div>
-
-          </div>
-
-          <div class="stat-item">
-
-            <div id="learningCount" class="stat-count">0</div>
-
-            <div class="stat-label">学习中</div>
-
-          </div>
-
-          <div class="stat-item">
-
-            <div id="masteredCount" class="stat-count">0</div>
-
-            <div class="stat-label">已掌握</div>
-
-          </div>
-
-        </div>
-
-        <div class="stats-details">
-
-          <div id="chapterStats"></div>
-
-        </div>
-
-      </div>
-
-    `;
-
-    document.body.insertAdjacentHTML('beforeend', panelHTML);
-
-    panel = document.getElementById('statsPanel');
-
-    
-
-    // 添加统计按钮
-
-    const toggleBtn = document.createElement('button');
-
-    toggleBtn.className = 'stats-toggle';
-
-    toggleBtn.innerHTML = `
-
-      <svg viewBox="0 0 24 24" fill="currentColor">
-
-        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-
-      </svg>
-
-      学习统计
-
-    `;
-
-    toggleBtn.onclick = toggleStatsPanel;
-
-    toggleBtn.id = 'statsToggleBtn';
-
-    document.body.appendChild(toggleBtn);
-
-  }
-
-  
-
-  // 更新统计信息
-
-  updateStats();
-
-  
-
-  panel.style.display = 'block';
-
-  document.getElementById('statsToggleBtn').innerHTML = `
-
-    <svg viewBox="0 0 24 24" fill="currentColor">
-
-      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-
-    </svg>
-
-    关闭统计
-
-  `;
-
-}
-
-
-
-function hideStatsPanel() {
-
-  const panel = document.getElementById('statsPanel');
-
-  if (panel) {
-
-    panel.style.display = 'none';
-
-  }
-
-  const toggleBtn = document.getElementById('statsToggleBtn');
-
-  if (toggleBtn) {
-
-    toggleBtn.innerHTML = `
-
-      <svg viewBox="0 0 24 24" fill="currentColor">
-
-        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/>
-
-      </svg>
-
-      学习统计
-
-    `;
-
-  }
-
-}
-
-
-
-function updateStats() {
-
-  if (!currentUser) {
-
-    hideStatsPanel();
-
-    return;
-
-  }
-
-  
-
-  // 统计各类状态的数量
-
-  let unlearned = 0, learning = 0, mastered = 0;
-
-  const chapterStats = {};
-
-  
-
-  // 遍历所有句子的状态
-
-  // 注意：这里需要访问句子数据，我们假设有一个全局变量 sentences 或类似的数据结构
-
-  // 由于实际数据结构未知，我们先统计progressCache中的数据
-
-  
-
-  Object.keys(progressCache).forEach(sid => {
-
-    const status = progressCache[sid];
-
-    switch(status) {
-
-      case 'unlearned': unlearned++; break;
-
-      case 'learning': learning++; break;
-
-      case 'mastered': mastered++; break;
-
-    }
-
-    
-
-    // 按章节统计（假设sid格式为 "chapter-sentence" 或类似）
-
-    const parts = sid.split('-');
-
-    if (parts.length >= 2) {
-
-      const chapter = parts[0];
-
-      if (!chapterStats[chapter]) {
-
-        chapterStats[chapter] = { total: 0, mastered: 0, learning: 0 };
-
-      }
-
-      chapterStats[chapter].total++;
-
-      if (status === 'mastered') chapterStats[chapter].mastered++;
-
-      if (status === 'learning') chapterStats[chapter].learning++;
-
-    }
-
+  saveProgress();
+  // 重置所有按钮
+  document.querySelectorAll('.status-btn').forEach(btn => {
+    btn.textContent = '⚪';
+    btn.className = 'status-btn status-unlearned';
+    btn.title = '未学习';
   });
-
-  
-
-  // 更新整体统计
-
-  const total = unlearned + learning + mastered;
-
-  const percent = total > 0 ? Math.round((mastered / total) * 100) : 0;
-
-  
-
-  document.getElementById('unlearnedCount').textContent = unlearned;
-
-  document.getElementById('learningCount').textContent = learning;
-
-  document.getElementById('masteredCount').textContent = mastered;
-
-  document.getElementById('overallPercent').textContent = percent + '%';
-
-  document.getElementById('progressFill').style.width = percent + '%';
-
-  
-
-  // 更新章节详情
-
-  const chapterStatsEl = document.getElementById('chapterStats');
-
-  if (chapterStatsEl) {
-
-    let html = '';
-
-    Object.keys(chapterStats).sort().forEach(chapter => {
-
-      const stats = chapterStats[chapter];
-
-      const chapterPercent = stats.total > 0 ? Math.round((stats.mastered / stats.total) * 100) : 0;
-
-      html += `
-
-        <div class="detail-item">
-
-          <span class="detail-chapter">第${chapter}章</span>
-
-          <span class="detail-progress">${chapterPercent}% (${stats.mastered}/${stats.total})</span>
-
-        </div>
-
-      `;
-
-    });
-
-    chapterStatsEl.innerHTML = html || '<div style="text-align:center;color:#a0aec0;padding:20px;">暂无学习数据</div>';
-
-  }
-
+  updateStatsDisplay();
+  alert('已清空所有进度！');
 }
-
-
-
-// 在updateProgressUI中调用updateStats
-
-function updateProgressUI() {
-
-  Object.keys(progressCache).forEach(function(sid) {
-
-    const btn = document.getElementById('status-' + sid);
-
-    if (btn) {
-
-      const status = progressCache[sid];
-
-      btn.textContent = getStatusIcon(status);
-
-      btn.className = 'status-btn status-' + status;
-
-    }
-
-  });
-
-  // 更新统计面板
-
-  if (currentUser) {
-
-    updateStats();
-
-  }
-
-}
-
-
 
 // ===== 离线缓存功能 =====
 
@@ -4164,7 +3250,7 @@ window.addEventListener('load', () => {
 
 
 
-window.onload = () => { initUserSystem();
+window.onload = () => { loadProgress();
 
   buildSearchIndex();
 
@@ -4515,6 +3601,7 @@ function showToast(msg, duration){
 // ===== 设置面板 =====
 
 function openSettings(){
+  refreshSettingsUserArea();
   document.getElementById('settingsOverlay').classList.add('open');
   const sc = document.getElementById('settingsStarCount');
   if(sc) sc.textContent = stars;
@@ -4527,107 +3614,23 @@ function openSettings(){
 function refreshSettingsUserArea() {
   const area = document.getElementById('settingsUserArea');
   if (!area) return;
-  if (currentUser) {
-    // 已登录
-    area.innerHTML = `
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-        <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:900;">
-          ${currentUser.username.charAt(0).toUpperCase()}
-        </div>
-        <div>
-          <div style="font-weight:700;color:#2d3748;font-size:15px;">${currentUser.username}</div>
-          <div style="font-size:12px;color:#48bb78;">✅ 已登录</div>
-        </div>
-      </div>
-      <button onclick="userLogout();refreshSettingsUserArea();" style="width:100%;padding:9px;border-radius:10px;border:none;background:#fee2e2;color:#dc2626;font-weight:700;font-size:13px;cursor:pointer;">退出登录</button>
-    `;
-  } else {
-    // 未登录
-    area.innerHTML = `
-      <p style="font-size:12px;color:#888;margin:0 0 10px;">登录后可同步学习进度。输入用户名即可自动注册。</p>
-      <input id="settingsUsernameInput" type="text" placeholder="用户名（必填）" maxlength="20"
-        style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;margin-bottom:8px;outline:none;">
-      <input id="settingsPasswordInput" type="password" placeholder="密码（默认 1234）" maxlength="30"
-        style="width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;border:1.5px solid #e2e8f0;font-size:14px;margin-bottom:10px;outline:none;">
-      <button onclick="doSettingsLogin()" style="width:100%;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:white;font-weight:700;font-size:14px;cursor:pointer;">
-        登录 / 注册
-      </button>
-      <div id="settingsLoginMsg" style="font-size:12px;color:#e53e3e;text-align:center;margin-top:6px;min-height:16px;"></div>
-    `;
-  }
+  // 计算进度统计
+  let learning = 0, mastered = 0, total = Object.keys(progressCache).length;
+  Object.values(progressCache).forEach(s => {
+    if (s === 'learning') learning++;
+    else if (s === 'mastered') mastered++;
+  });
+  area.innerHTML = `
+    <div style="font-size:13px;color:#666;margin-bottom:10px;">
+      📊 已标记 ${total} 句 · 学习中 <b>${learning}</b> · 已掌握 <b style="color:#48bb78">${mastered}</b>
+    </div>
+    <button onclick="clearAllProgress()" style="width:100%;padding:10px;border-radius:10px;border:1.5px solid #fc8181;background:white;color:#e53e3e;font-size:13px;font-weight:700;cursor:pointer;">
+      🗑️ 清空所有进度
+    </button>
+  `;
 }
 
-async function doSettingsLogin() {
-  const uInput = document.getElementById('settingsUsernameInput');
-  const pInput = document.getElementById('settingsPasswordInput');
-  const msgEl = document.getElementById('settingsLoginMsg');
-  if (!uInput) return;
-  const username = uInput.value.trim();
-  const password = (pInput && pInput.value.trim()) ? pInput.value.trim() : '1234';
-  if (!username) { if(msgEl) msgEl.textContent = '请输入用户名'; return; }
-  if(msgEl) msgEl.textContent = '登录中...';
-  try {
-    // 先尝试登录
-    const res = await fetch(API_BASE + '/api/user/login', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({username, password})
-    });
-    const data = await res.json();
-    if (data.success) {
-      currentUser = data.user;
-      localStorage.setItem('qinzi_user', JSON.stringify(currentUser));
-      showToast('登录成功！欢迎 ' + currentUser.username + ' 🎉');
-      refreshSettingsUserArea();
-      updateHeaderUser();
-      loadUserProgress();
-    } else if (data.error && data.error.includes('不存在')) {
-      // 用户不存在 → 自动注册
-      if(msgEl) msgEl.textContent = '注册中...';
-      await doSettingsRegister(username, password, msgEl);
-    } else {
-      if(msgEl) msgEl.textContent = '登录失败：' + (data.error || '密码错误');
-    }
-  } catch(err) {
-    // 网络错误时也尝试注册（可能是第一次）
-    if(msgEl) msgEl.textContent = '服务器连接失败，请稍后重试';
-    console.error(err);
-  }
-}
 
-async function doSettingsRegister(username, password, msgEl) {
-  try {
-    const res = await fetch(API_BASE + '/api/user/register', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({username, password})
-    });
-    const data = await res.json();
-    if (data.success) {
-      currentUser = data.user;
-      localStorage.setItem('qinzi_user', JSON.stringify(currentUser));
-      showToast('注册成功！欢迎 ' + currentUser.username + ' 🎉');
-      refreshSettingsUserArea();
-      updateHeaderUser();
-    } else {
-      if(msgEl) msgEl.textContent = '注册失败：' + (data.error || '用户名已存在');
-    }
-  } catch(err) {
-    if(msgEl) msgEl.textContent = '服务器连接失败，请稍后重试';
-  }
-}
-
-function updateHeaderUser() {
-  const el = document.getElementById('userDisplay');
-  if (!el) return;
-  if (currentUser) {
-    el.innerHTML = '<span style="color:#48dbfb;font-weight:bold;cursor:pointer;text-decoration:underline;" title="点击进入设置">' + currentUser.username + '</span>';
-    el.onclick = function(){ openSettings(); };
-  } else {
-    el.innerHTML = '<span style="color:#888;cursor:pointer;text-decoration:underline;" title="点击登录">点击登录</span>';
-    el.onclick = function(){ openSettings(); refreshSettingsUserArea(); };
-  }
-}
 
 // ===== 设置页：缓存区渲染 =====
 function refreshSettingsCacheUI() {
