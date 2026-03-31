@@ -3163,52 +3163,20 @@ function getAllChapters() {
 // 获取章节音频URL
 
 function getChapterAudioUrls(chapter) {
-
   const urls = [];
-
   try {
-
-    // 使用实际数据结构 D[chapter].sections[i].audio_rel
     const ch = D && D[String(chapter)];
-
     if (ch && ch.sections) {
-
       ch.sections.forEach(section => {
-
         if (section.audio_rel) {
-
           urls.push(section.audio_rel);
-
         }
-
       });
-
     }
-
   } catch (err) {
-
     console.error('获取章节音频URL失败:', err);
-
   }
-
   return urls;
-
-}
-
-      });
-
-    }
-
-  } catch (err) {
-
-    console.error('获取章节音频URL失败:', err);
-
-  }
-
-  
-
-  return urls;
-
 }
 
 
