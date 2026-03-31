@@ -2593,6 +2593,21 @@ const PROGRESS_KEY = 'qinzi_progress_v1';
 let progressCache = {};
 
 // 加载进度
+
+// 更新统计面板显示（兼容层）
+function updateStatsDisplay() {
+  try {
+    var total = Object.keys(progressCache).length;
+    var mastered = Object.values(progressCache).filter(function(s){ return s === 'mastered'; }).length;
+    var learning = Object.values(progressCache).filter(function(s){ return s === 'learning'; }).length;
+    // 更新星数显示（如果元素存在）
+    var sc = document.getElementById('starCount');
+    if (sc) sc.textContent = mastered;
+    var ssc = document.getElementById('settingsStarCount');
+    if (ssc) ssc.textContent = mastered;
+  } catch(e) {}
+}
+
 function loadProgress() {
   try {
     const saved = localStorage.getItem(PROGRESS_KEY);
