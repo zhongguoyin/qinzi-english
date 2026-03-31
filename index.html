@@ -3124,17 +3124,11 @@ async function cacheChapterAudio(chapter) {
 
 function getCurrentChapter() {
 
-  // 这里需要根据实际的页面结构来获取当前显示的章节
+  // 使用实际的当前章节变量 curChKey
+  // curChKey 在 showCh(k) 时被赋值，如 "1", "2", ...
+  if (typeof curChKey !== 'undefined' && curChKey !== null) {
 
-  // 假设页面有当前章节的标识
-
-  const activeTab = document.querySelector('.tab.active');
-
-  if (activeTab) {
-
-    const match = activeTab.textContent.match(/第(\d+)章/);
-
-    if (match) return match[1];
+    return String(curChKey);
 
   }
 
@@ -3172,25 +3166,34 @@ function getChapterAudioUrls(chapter) {
 
   const urls = [];
 
-  
-
   try {
 
-    // 查找对应章节的数据
+    // 使用实际数据结构 D[chapter].sections[i].audio_rel
+    const ch = D && D[String(chapter)];
 
-    const chapterData = window.chaptersData && window.chaptersData[chapter];
+    if (ch && ch.sections) {
 
-    if (chapterData && chapterData.sections) {
-
-      // 遍历所有小节，收集音频URL
-
-      chapterData.sections.forEach(section => {
+      ch.sections.forEach(section => {
 
         if (section.audio_rel) {
 
           urls.push(section.audio_rel);
 
         }
+
+      });
+
+    }
+
+  } catch (err) {
+
+    console.error('获取章节音频URL失败:', err);
+
+  }
+
+  return urls;
+
+}
 
       });
 
