@@ -1747,8 +1747,8 @@ function toggleOfflinePanel() {
     updateOfflineUI();
   }
   
-  const panel = document.getElementById('offlinePanel');
-  panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  const currentPanel = document.getElementById('offlinePanel');
+  if (currentPanel) currentPanel.style.display = currentPanel.style.display === 'block' ? 'none' : 'block';
 }
 
 function hideOfflinePanel() {
