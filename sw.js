@@ -1,6 +1,6 @@
 // Service Worker - 亲子英语大冒险
 // 更新内容时，修改 CACHE_VERSION 的值（会触发自动更新提示）
-const CACHE_VERSION = 'v1.0.3';
+const CACHE_VERSION = 'v1.0.4';
 const CACHE_NAME = 'qinzi-english-' + CACHE_VERSION;
 
 // 安装：立刻激活，跳过 waiting
@@ -26,9 +26,9 @@ self.addEventListener('activate', event => {
   );
 });
 
-// 拦截请求：
+// 拦截请求策略：
 // - CDN 音频（mp3）：完全不拦截，直接走网络
-// - HTML 主页面：网络优先，确保每次都加载最新版，网络失败再用缓存
+// - HTML 主页面：完全不缓存，每次都从网络加载最新版
 // - 其他静态资源（图标等）：缓存优先
 self.addEventListener('fetch', event => {
   const url = event.request.url;
@@ -38,17 +38,10 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // HTML 主页面：网络优先（保证每次都是最新内容）
-  if (url.includes('.html') || url.endsWith('/') || url === self.location.origin + '/qinzi-english/') {
+  // HTML 主页面：完全不缓存，始终从网络加载
+  if (url.includes('.html') || url.endsWith('/') || url.endsWith('/qinzi-english/')) {
     event.respondWith(
-      fetch(event.request)
-        .then(networkResponse => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-          }
-          return networkResponse;
-        })
+      fetch(event.request, { cache: 'no-store' })
         .catch(() => caches.match(event.request))  // 离线时才用缓存
     );
     return;
