@@ -1,7 +1,7 @@
 // Service Worker - 亲子英语大冒险
 // 更新内容时，修改 CACHE_VERSION 的值（会触发自动更新提示）
-const CACHE_VERSION = 'v1.0.4';
-const CACHE_NAME = 'qinzi-v1774962393' + CACHE_VERSION;
+const CACHE_VERSION = 'v1.0.5';
+const CACHE_NAME = 'qinzi-english-' + CACHE_VERSION;
 
 // 安装：立刻激活，跳过 waiting
 self.addEventListener('install', event => {
