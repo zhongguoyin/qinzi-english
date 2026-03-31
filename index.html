@@ -2224,33 +2224,6 @@ body.hide-zh .src-sent-zh { opacity: 0; pointer-events: none; }
 
 </style>
 
-<script>
-// 强制清除旧 Service Worker 缓存（版本升级时使用）
-(function() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      // 检查缓存版本标记
-      var cacheKey = 'sw_cache_bust_v2';
-      if (!sessionStorage.getItem(cacheKey)) {
-        sessionStorage.setItem(cacheKey, '1');
-        // 注销所有旧 SW，让页面重新安装新版
-        Promise.all(registrations.map(function(r) { return r.unregister(); })).then(function() {
-          // 清除所有 Cache Storage
-          if (window.caches) {
-            caches.keys().then(function(keys) {
-              return Promise.all(keys.map(function(k) { return caches.delete(k); }));
-            }).then(function() {
-              window.location.reload(true);
-            });
-          } else {
-            window.location.reload(true);
-          }
-        });
-      }
-    });
-  }
-})();
-</script>
 </head>
 
 <body>
@@ -6152,6 +6125,14 @@ window.addEventListener('appinstalled', ()=>{
 
 
 
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', function(e) {
+    if (e.data && e.data.type === 'SW_UPDATED') { window.location.reload(); }
+  });
+  navigator.serviceWorker.register('/qinzi-english/sw.js');
+}
+</script>
 </body>
 
 </html>
