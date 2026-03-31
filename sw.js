@@ -1,70 +1,57 @@
-// Service Worker - 亲子英语大冒险
-// 更新内容时，修改 CACHE_VERSION 的值（会触发自动更新提示）
-const CACHE_VERSION = 'v1.0.3168';
-const CACHE_NAME = 'qinzi-english-' + CACHE_VERSION;
+// Service Worker v2.0 - Network First for HTML, Cache First for media
+const CACHE_NAME = 'qinzi-v2.0';
+const MEDIA_CACHE = 'qinzi-media-v2.0';
 
-// 安装：立刻激活，跳过 waiting
+// 安装时跳过等待，立即激活
 self.addEventListener('install', event => {
-  console.log('[SW] 安装版本:', CACHE_VERSION);
-  self.skipWaiting();  // 新 SW 安装后立即接管，无需等用户关闭旧页面
+  self.skipWaiting();
 });
 
-// 激活时清理旧版本缓存，并立刻接管所有页面
+// 激活时清除所有旧缓存
 self.addEventListener('activate', event => {
-  console.log('[SW] 激活版本:', CACHE_VERSION);
   event.waitUntil(
-    caches.keys().then(cacheNames =>
+    caches.keys().then(keys =>
       Promise.all(
-        cacheNames
-          .filter(name => name.startsWith('qinzi-english-') && name !== CACHE_NAME)
-          .map(name => {
-            console.log('[SW] 清理旧缓存:', name);
-            return caches.delete(name);
-          })
+        keys.filter(k => k !== CACHE_NAME && k !== MEDIA_CACHE)
+            .map(k => {
+              console.log('[SW] 删除旧缓存:', k);
+              return caches.delete(k);
+            })
       )
-    ).then(() => self.clients.claim())
+    ).then(() => clients.claim())
   );
 });
 
-// 拦截请求策略：
-// - CDN 音频（mp3）：完全不拦截，直接走网络
-// - HTML 主页面：完全不缓存，每次都从网络加载最新版
-// - 其他静态资源（图标等）：缓存优先
+// 请求拦截
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
-  // CDN 音频：完全不拦截
-  if (url.includes('cdn.jsdelivr.net') || url.includes('.mp3')) {
-    return;
-  }
-
-  // HTML 主页面：完全不缓存，始终从网络加载
-  if (url.includes('.html') || url.endsWith('/') || url.endsWith('/qinzi-english/')) {
+  // index.html 和根路径：永远走网络，不缓存
+  if (url.endsWith('/') || url.includes('index.html') || url.includes('qinzi-english/') && !url.includes('.')) {
     event.respondWith(
-      fetch(event.request, { cache: 'no-store' })
-        .catch(() => caches.match(event.request))  // 离线时才用缓存
+      fetch(event.request).catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // 其他静态资源（图标/manifest等）：缓存优先，加快加载
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(networkResponse => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
-        }
-        return networkResponse;
-      });
-    })
-  );
-});
-
-// 收到主线程消息（兼容手动触发更新）
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+  // 音频/图片（CDN 资源）：Cache First
+  if (url.includes('cdn.jsdelivr.net') || url.includes('.mp3') || url.includes('.jpg') || url.includes('.png')) {
+    event.respondWith(
+      caches.open(MEDIA_CACHE).then(cache =>
+        cache.match(event.request).then(cached => {
+          if (cached) return cached;
+          return fetch(event.request).then(resp => {
+            if (resp.ok) cache.put(event.request, resp.clone());
+            return resp;
+          });
+        })
+      )
+    );
+    return;
   }
+
+  // 其他：网络优先
+  event.respondWith(
+    fetch(event.request).catch(() => caches.match(event.request))
+  );
 });
